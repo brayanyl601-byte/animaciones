@@ -8,11 +8,14 @@ Esta es tu galería personal de animaciones para OBS, alojada en GitHub Pages.
 1.  Abre la carpeta de este proyecto en tu computadora.
 2.  Entra en la carpeta `src` > `animaciones`.
 3.  Arrastra tus archivos de video (`.webm`, `.mp4`) o imágenes aquí.
-4.  **Nombres de archivo:** El sistema es inteligente. Ponle un nombre clave para que se ordene solo:
-    *   `intro-cyberpunk.webm` -> Se va a **Inicio**.
-    *   `fin-del-directo.mp4` -> Se va a **Fin**.
-    *   `alerta-donacion.webm` -> Se va a **Donaciones**.
-    *   `marco-camara.png` -> Se va a **Cámara**.
+4.  **Nombres de archivo:** Ponle una palabra clave y números si quieres. El sistema los ordenará automáticamente.
+    
+    **Ejemplos válidos:**
+    *   `inicio 1.mp4`, `inicio 2.webm` -> Se van a **Inicio**.
+    *   `fin stream v1.mp4` -> Se va a **Fin**.
+    *   `donacion bits 100.webm` -> Se va a **Donaciones**.
+    *   `marco camara.png` -> Se va a **Cámara**.
+
 5.  Sube los cambios a GitHub:
     ```bash
     git add .

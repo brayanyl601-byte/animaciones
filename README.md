@@ -23,6 +23,3 @@ Esta es tu galería personal de animaciones para OBS, alojada en GitHub Pages.
     git push
     ```
 6.  Espera 1-2 minutos y actualiza tu página web. ¡Listo!
-
-## 🔐 Clave de Administrador
-Para acceder a las herramientas de prueba en la web: `experto04`

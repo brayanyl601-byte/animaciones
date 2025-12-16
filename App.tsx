@@ -6,21 +6,20 @@ import { INITIAL_ASSETS } from './constants';
 import { AnimationAsset } from './types';
 
 function App() {
-  // Estado para las animaciones (persiste mientras no se recargue la página)
-  const [assets, setAssets] = useState<AnimationAsset[]>(INITIAL_ASSETS);
+  // Estado para las animaciones (En modo estático es constante)
+  const [assets] = useState<AnimationAsset[]>(INITIAL_ASSETS);
 
   return (
     <HashRouter>
       <Routes>
-        {/* Ruta Principal: Dashboard (Público, con opción de Admin interna) */}
+        {/* Ruta Principal: Dashboard de Galería (Solo lectura) */}
         <Route path="/" element={
           <Dashboard 
             assets={assets} 
-            setAssets={setAssets} 
           />
         } />
         
-        {/* Ruta Overlay OBS (Pública) */}
+        {/* Ruta Overlay OBS */}
         <Route path="/overlay/:id" element={<Overlay assets={assets} />} />
 
         {/* Fallback */}

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { AnimationAsset, Category, CategoryLabels } from '../types';
 import { AssetCard } from './AssetCard';
@@ -6,7 +5,6 @@ import { FolderOpen, Video, MonitorPlay, Sparkles } from 'lucide-react';
 
 interface DashboardProps {
   assets: AnimationAsset[];
-  setAssets: React.Dispatch<React.SetStateAction<AnimationAsset[]>>;
 }
 
 export const Dashboard: React.FC<DashboardProps> = ({ assets }) => {
@@ -82,7 +80,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ assets }) => {
                 src/animaciones
               </code>
               <p className="text-[9px] text-slate-500 leading-tight">
-                El sistema detectará automáticamente si es Intro, Donación, etc. según el nombre.
+                Usa nombres como "intro", "fin", "donacion" y el sistema los ordenará solo.
               </p>
            </div>
         </div>
@@ -109,7 +107,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ assets }) => {
             <Video size={64} className="mb-6 opacity-30" />
             <p className="text-xl font-medium text-slate-400">Carpeta Vacía</p>
             <p className="text-sm mt-2 max-w-md text-center">
-              No hay archivos en <code>src/animaciones</code> para esta categoría.
+              No hay archivos en <code>src/animaciones</code> que coincidan con esta categoría.
             </p>
           </div>
         ) : (

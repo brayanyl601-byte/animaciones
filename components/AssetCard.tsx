@@ -1,4 +1,3 @@
-
 import React, { useState, useRef } from 'react';
 import { AnimationAsset, AssetType, CategoryLabels } from '../types';
 import { Copy, Check, ExternalLink, Play, AlertCircle } from 'lucide-react';

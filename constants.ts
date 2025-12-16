@@ -10,25 +10,11 @@ import { AnimationAsset, AssetType, Category } from './types';
  * 1. Crea una carpeta llamada 'animaciones' DENTRO de la carpeta 'src'.
  *    Ruta completa: src/animaciones/
  * 2. Arrastra tus archivos ahí.
- * 3. Ponles nombres descriptivos usando palabras clave + números si quieres:
- *    
- *    EJEMPLOS VÁLIDOS:
- *    - "inicio 1.mp4", "inicio 2.mp4" -> Se van a Inicio
- *    - "donacion 1.webm", "donacion 2.webm" -> Se van a Donaciones
- *    - "camara v1.png", "camara v2.png" -> Se van a Cámara
- *
- *    PALABRAS CLAVE:
- *    - Intro: "intro", "inicio"
- *    - Fin: "fin", "ending", "cierre"
- *    - BRB: "brb", "espera", "vuelvo"
- *    - Cámara: "cam", "webcam", "marco"
- *    - Donación: "donacion", "bits", "dinero"
- *    - Seguidor: "follow", "seguidor"
- *    - Suscriptor: "sub", "prime"
+ * 3. Ponles nombres descriptivos.
  */
 
-// 1. Esta función mágica busca todos los archivos en la carpeta src/animaciones
-const assetsFiles = (import.meta as any).glob('./animaciones/*.{mp4,webm,png,gif,jpg,jpeg,svg}', { 
+// 1. Buscamos en AMBAS rutas posibles para evitar errores (dentro de src y en la raíz)
+const assetsFiles = (import.meta as any).glob(['./src/animaciones/*.{mp4,webm,png,gif,jpg,jpeg,svg}', './animaciones/*.{mp4,webm,png,gif,jpg,jpeg,svg}'], { 
   eager: true, 
   query: '?url',
   import: 'default' 
@@ -52,10 +38,11 @@ const guessCategory = (fileName: string): Category => {
   if (lowerName.includes('follow') || lowerName.includes('seguidor')) return Category.ALERTS_FOLLOWER;
   if (lowerName.includes('sub') || lowerName.includes('suscri') || lowerName.includes('prime')) return Category.ALERTS_SUB;
   
-  // 4. Donaciones (Si dice donación, bits, dinero, etc.)
-  if (lowerName.includes('donacion') || lowerName.includes('donation') || lowerName.includes('bit') || lowerName.includes('dinero') || lowerName.includes('tip')) return Category.ALERTS_DONATION;
+  // 4. Donaciones y Alertas Generales
+  // Si dice "alerta" y no especificó qué tipo, lo mandamos aquí también para que no se pierda.
+  if (lowerName.includes('donacion') || lowerName.includes('donation') || lowerName.includes('bit') || lowerName.includes('dinero') || lowerName.includes('tip') || lowerName.includes('alerta') || lowerName.includes('alert')) return Category.ALERTS_DONATION;
   
-  // Categoría por defecto si no sabe qué es (lo mandamos a Intro para que sea visible al menos)
+  // Categoría por defecto si no sabe qué es
   return Category.SCENE_INTRO; 
 };
 
@@ -67,37 +54,32 @@ const guessType = (path: string): AssetType => {
   return AssetType.IMAGE;
 };
 
-// Función para hacer el título bonito (ej: 'mi-video-intro.mp4' -> 'Mi Video Intro')
+// Función para hacer el título bonito
 const formatTitle = (fileName: string): string => {
-  // Quitar extensión
   const nameWithoutExt = fileName.split('.').slice(0, -1).join('.');
-  // Reemplazar guiones y guiones bajos con espacios
   const withSpaces = nameWithoutExt.replace(/[-_]/g, ' ');
-  // Capitalizar primera letra de cada palabra
   return withSpaces.replace(/\b\w/g, l => l.toUpperCase());
 };
 
-// 2. Procesamos los archivos encontrados para crear la lista automáticamente
+// 2. Procesamos los archivos encontrados
 const rawAssets: AnimationAsset[] = Object.entries(assetsFiles).map(([path, url]) => {
-  // Extraemos el nombre del archivo de la ruta
   const fileName = path.split('/').pop() || 'archivo-desconocido';
   
   return {
-    id: fileName.replace(/\./g, '-'), // ID único basado en el nombre
+    id: fileName.replace(/\./g, '-'),
     title: formatTitle(fileName),
     category: guessCategory(fileName),
     type: guessType(fileName),
-    src: url as string, // La URL generada automáticamente por Vite
-    loop: true, // Por defecto todo en loop
+    src: url as string,
+    loop: true,
   };
 });
 
-// 3. Ordenamos alfanuméricamente (Para que "Inicio 1" vaya antes que "Inicio 2")
+// 3. Ordenamos alfanuméricamente
 export const INITIAL_ASSETS = rawAssets.sort((a, b) => {
   return a.title.localeCompare(b.title, undefined, { numeric: true, sensitivity: 'base' });
 });
 
-// Si la carpeta está vacía, añadimos un log
 if (INITIAL_ASSETS.length === 0) {
-  console.log("No se encontraron archivos en src/animaciones.");
+  console.log("⚠️ No se encontraron archivos. Asegúrate de ponerlos en 'src/animaciones/'");
 }
